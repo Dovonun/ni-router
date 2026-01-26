@@ -1,5 +1,7 @@
 # Initial Concept
 
+App Name: Ni-Router
+
 Goal:
 Build a minimal Android app that acts only as an intent router for QR payloads.
 No UI, no persistence, no background services, no dependencies, one Kotlin file if possible.

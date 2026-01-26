@@ -1,7 +1,7 @@
 # Specification: Core Intent Routing
 
 ## Overview
-This track implements the core functionality of the `ni-router` app. The goal is to create a minimal Android application that acts as an intent router for specific QR code payloads (WiFi, vCard, and Calendar).
+This track implements the core functionality of the Ni-Router app. The goal is to create a minimal Android application that acts as an intent router for specific QR code payloads (WiFi, vCard, and Calendar).
 
 ## User Stories
 - As a user, when I scan a WiFi QR code, I want the system to prompt me to connect to the network without manually entering details.
