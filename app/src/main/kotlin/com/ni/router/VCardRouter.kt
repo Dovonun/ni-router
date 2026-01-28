@@ -15,9 +15,9 @@ class VCardRouter {
 
     fun route(context: Context, payload: String): Boolean {
         // Try to parse basic info for ACTION_INSERT (better UX)
-        val name = extractField(payload, "FN:")
-        val phone = extractField(payload, "TEL:")
-        val email = extractField(payload, "EMAIL:")
+        val name = extractField(payload, "FN") ?: extractField(payload, "N")
+        val phone = extractField(payload, "TEL")
+        val email = extractField(payload, "EMAIL")
 
         if (name != null || phone != null || email != null) {
             val intent = Intent(Intent.ACTION_INSERT).apply {
@@ -32,7 +32,7 @@ class VCardRouter {
         }
 
         // Fallback to file-based import if parsing fails
-        try {
+        return try {
             val vcardFile = File(context.cacheDir, "contact.vcf")
             vcardFile.writeText(payload.trim())
 
@@ -49,18 +49,22 @@ class VCardRouter {
             }
 
             context.startActivity(intent)
-            return true
+            true
         } catch (e: Exception) {
             e.printStackTrace()
-            return false
+            false
         }
     }
 
-    private fun extractField(payload: String, prefix: String): String? {
+    private fun extractField(payload: String, fieldName: String): String? {
         val lines = payload.lines()
         for (line in lines) {
-            if (line.trim().startsWith(prefix, ignoreCase = true)) {
-                return line.trim().substring(prefix.length).trim()
+            val trimmedLine = line.trim()
+            if (trimmedLine.startsWith(fieldName, ignoreCase = true)) {
+                val firstColon = trimmedLine.indexOf(':')
+                if (firstColon != -1 && trimmedLine.substring(0, firstColon).contains(fieldName, ignoreCase = true)) {
+                    return trimmedLine.substring(firstColon + 1).trim()
+                }
             }
         }
         return null
