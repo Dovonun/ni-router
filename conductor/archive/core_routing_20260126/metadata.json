@@ -1,0 +1,8 @@
+{
+  "track_id": "core_routing_20260126",
+  "type": "feature",
+  "status": "new",
+  "created_at": "2026-01-26T14:30:00Z",
+  "updated_at": "2026-01-26T14:30:00Z",
+  "description": "Build the core intent routing functionality, including the Android manifest setup and the RouterActivity with support for WIFI, VCARD, and Calendar payloads."
+}
