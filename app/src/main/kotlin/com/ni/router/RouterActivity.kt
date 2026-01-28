@@ -8,6 +8,7 @@ class RouterActivity : Activity() {
     private val payloadRouter = PayloadRouter()
     private val wifiRouter = WifiRouter()
     private val vCardRouter = VCardRouter()
+    private val calendarRouter = CalendarRouter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +35,8 @@ class RouterActivity : Activity() {
             wifiRouter.route(this, payload)
         } else if (vCardRouter.isVCard(payload)) {
             vCardRouter.route(this, payload)
+        } else if (calendarRouter.isCalendar(payload)) {
+            calendarRouter.route(this, payload)
         }
     }
 }

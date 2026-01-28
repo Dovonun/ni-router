@@ -14,7 +14,7 @@
 - [x] Task: Implement VCARD payload routing 66d3605
     - [x] Write unit tests for VCARD file generation and intent dispatch
     - [x] Implement VCARD `FileProvider` logic and `ACTION_VIEW` intent
-- [ ] Task: Implement Calendar payload routing
+- [~] Task: Implement Calendar payload routing
     - [ ] Write unit tests for Calendar file generation and intent dispatch
     - [ ] Implement Calendar `FileProvider` logic and `ACTION_VIEW` intent
 - [ ] Task: Conductor - User Manual Verification 'Routing Implementation' (Protocol in workflow.md)
