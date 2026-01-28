@@ -9,8 +9,18 @@ import java.io.File
 class VCardRouter {
     fun isVCard(payload: String): Boolean {
         val trimmed = payload.trim()
+        val hasTags = trimmed.startsWith("BEGIN:VCARD", ignoreCase = true) &&
+                     trimmed.endsWith("END:VCARD", ignoreCase = true)
+        // Strict check: valid vCards MUST have newlines. 
+        // Single-line vCards (often caused by sharing from browser bars) are malformed.
+        return hasTags && trimmed.contains("\n")
+    }
+
+    fun isMalformedSingleLine(payload: String): Boolean {
+        val trimmed = payload.trim()
         return trimmed.startsWith("BEGIN:VCARD", ignoreCase = true) &&
-               trimmed.endsWith("END:VCARD", ignoreCase = true)
+               trimmed.endsWith("END:VCARD", ignoreCase = true) &&
+               !trimmed.contains("\n")
     }
 
     fun route(context: Context, payload: String): Boolean {

@@ -16,25 +16,38 @@ data class WifiConfig(
 )
 
 class WifiRouter {
-    fun route(context: Context, payload: String): Boolean {
+    enum class RouteResult {
+        SUCCESS,
+        ALREADY_CONNECTED,
+        WAITING_FOR_WIFI,
+        FAILURE
+    }
+
+    fun route(context: Context, payload: String): RouteResult {
         val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         if (payload.equals("WIFI:CLEAR", ignoreCase = true)) {
-            // This clears ANY lingering suggestions previously added by this app
             wifiManager.removeNetworkSuggestions(emptyList())
             Toast.makeText(context, "Lingering network suggestions cleared.", Toast.LENGTH_SHORT).show()
-            return true
+            return RouteResult.SUCCESS
         }
 
-        val config = parsePayload(payload) ?: return false
+        val config = parsePayload(payload) ?: return RouteResult.FAILURE
         
-        // Show WiFi panel if disabled (API 29+)
+        // Check if already connected (best effort without location permission)
+        val info = wifiManager.connectionInfo
+        val currentSsid = info.ssid?.replace("\"", "")
+        if (currentSsid != null && currentSsid != "<unknown ssid>" && currentSsid.equals(config.ssid, ignoreCase = true)) {
+            Toast.makeText(context, "Already connected to ${config.ssid}", Toast.LENGTH_SHORT).show()
+            return RouteResult.ALREADY_CONNECTED
+        }
+
         if (!wifiManager.isWifiEnabled) {
             val panelIntent = Intent("android.settings.panel.action.WIFI").apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(panelIntent)
-            return true
+            return RouteResult.WAITING_FOR_WIFI
         }
 
         // Use ACTION_WIFI_ADD_NETWORKS (API 30+) for a "stateless" saved network experience
@@ -57,9 +70,9 @@ class WifiRouter {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)
-            return true
+            return RouteResult.SUCCESS
         } else {
-            // Fallback for API 29 - unfortunately suggestions are the only way here
+            // Fallback for API 29
             val suggestionBuilder = WifiNetworkSuggestion.Builder()
                 .setSsid(config.ssid)
             if (config.password != null && config.type?.uppercase() != "WPA3") {
@@ -72,7 +85,7 @@ class WifiRouter {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(settingsIntent)
-            return true
+            return RouteResult.SUCCESS
         }
     }
 
