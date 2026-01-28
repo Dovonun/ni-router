@@ -31,12 +31,15 @@ class RouterActivity : Activity() {
     }
 
     private fun routePayload(payload: String) {
-        if (payload.startsWith("WIFI:", ignoreCase = true)) {
-            wifiRouter.route(this, payload)
-        } else if (vCardRouter.isVCard(payload)) {
-            vCardRouter.route(this, payload)
-        } else if (calendarRouter.isCalendar(payload)) {
-            calendarRouter.route(this, payload)
+        val success = when {
+            payload.startsWith("WIFI:", ignoreCase = true) -> wifiRouter.route(this, payload)
+            vCardRouter.isVCard(payload) -> vCardRouter.route(this, payload)
+            calendarRouter.isCalendar(payload) -> calendarRouter.route(this, payload)
+            else -> false
+        }
+
+        if (!success) {
+            android.widget.Toast.makeText(this, "No valid payload detected", android.widget.Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -20,6 +20,9 @@
 - [ ] Task: Conductor - User Manual Verification 'Routing Implementation' (Protocol in workflow.md)
 
 ## Phase 3: Polish and Validation
-- [ ] Task: Implement "Unsupported format" Toast and silent failure logic
+- [~] Task: Implement "Unsupported format" Toast and silent failure logic
+- [~] Task: Improve WIFI/VCARD UX based on feedback
+    - [ ] Update WIFI to use proactive connection UI on API 30+
+    - [ ] Update VCARD to open contact editor with pre-filled data
 - [ ] Task: Final APK size verification and dependency audit
 - [ ] Task: Conductor - User Manual Verification 'Polish and Validation' (Protocol in workflow.md)
