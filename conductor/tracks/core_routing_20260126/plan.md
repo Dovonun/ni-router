@@ -1,11 +1,11 @@
 # Implementation Plan: Core Intent Routing
 
-## Phase 1: Project Scaffolding
+## Phase 1: Project Scaffolding [checkpoint: f4b4a5e]
 - [x] Task: Initialize Android project structure (Gradle files, AndroidManifest.xml) 9636c21
     - [x] Set application name to "Ni-Router" in `AndroidManifest.xml` and `strings.xml`
 - [x] Task: Configure `FileProvider` in AndroidManifest.xml 555b5d7
 - [x] Task: Create `RouterActivity` skeleton with basic intent handling 72c84ad
-- [ ] Task: Conductor - User Manual Verification 'Project Scaffolding' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'Project Scaffolding' (Protocol in workflow.md) f4b4a5e
 
 ## Phase 2: Routing Implementation
 - [ ] Task: Implement WIFI payload routing
