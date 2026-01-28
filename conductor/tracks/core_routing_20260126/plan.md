@@ -4,7 +4,7 @@
 - [x] Task: Initialize Android project structure (Gradle files, AndroidManifest.xml) 9636c21
     - [x] Set application name to "Ni-Router" in `AndroidManifest.xml` and `strings.xml`
 - [x] Task: Configure `FileProvider` in AndroidManifest.xml 555b5d7
-- [ ] Task: Create `RouterActivity` skeleton with basic intent handling
+- [~] Task: Create `RouterActivity` skeleton with basic intent handling
 - [ ] Task: Conductor - User Manual Verification 'Project Scaffolding' (Protocol in workflow.md)
 
 ## Phase 2: Routing Implementation
