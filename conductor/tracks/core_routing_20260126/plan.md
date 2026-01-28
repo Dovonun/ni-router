@@ -24,5 +24,5 @@
 - [x] Task: Improve WIFI/VCARD UX based on feedback dfc3b90
     - [x] Update WIFI to use proactive connection UI on API 30+
     - [x] Update VCARD to open contact editor with pre-filled data
-- [ ] Task: Final APK size verification and dependency audit
+- [x] Task: Final APK size verification and dependency audit 4d7e2a6
 - [ ] Task: Conductor - User Manual Verification 'Polish and Validation' (Protocol in workflow.md)
