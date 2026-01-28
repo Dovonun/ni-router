@@ -21,7 +21,7 @@
 
 ## Phase 3: Polish and Validation
 - [x] Task: Implement "Unsupported format" Toast and silent failure logic dfc3b90
-- [x] Task: Improve WIFI/VCARD UX based on feedback c34620c
+- [x] Task: Improve WIFI/VCARD UX based on feedback dd30279
     - [x] Update WIFI to use proactive connection UI on API 30+
     - [x] Update VCARD to open contact editor with pre-filled data
 - [x] Task: Final APK size verification and dependency audit 4d7e2a6
