@@ -33,10 +33,13 @@ Activity flow:
 
 1. onCreate:
    - Receive intent
-   - Read Intent.EXTRA_TEXT
+   - Extract payload from Intent.dataString (ACTION_VIEW) or Intent.EXTRA_TEXT (ACTION_SEND)
    - If null → finish
    - Trim and normalize text
    - Call handleText(text)
+
+2. onResume:
+   - If waiting for WiFi state change, check and re-trigger routing once enabled.
 
 2. handleText(text):
    - If text starts with "WIFI:" → handleWifi(text)
@@ -53,23 +56,14 @@ handleWifi(text):
     - SSID (S)
     - Password (P)
     - Type (T)
-- Build WifiNetworkSuggestion:
-    - setSsid()
-    - setWpa2Passphrase() or open network if nopass
-- Call:
-    WifiManager.addNetworkSuggestions(listOf(suggestion))
-- Let system show confirmation dialog
+- Use Settings.ACTION_WIFI_ADD_NETWORKS (API 30+) for stateless saved network experience.
+- Use Settings.Panel.ACTION_WIFI if WiFi is disabled to prompt user activation.
+- Fallback to addNetworkSuggestions for API 29.
 - finish()
 
 handleVCard(text):
-- Write text to:
-    cacheDir/contacts.vcf
-- Create content URI via FileProvider
-- Create intent:
-    ACTION_VIEW
-    type = "text/x-vcard"
-    FLAG_GRANT_READ_URI_PERMISSION
-- startActivity(intent)
+- Try to parse basic info (FN, TEL, EMAIL, ORG, TITLE, ADR) for ACTION_INSERT to open contact editor.
+- Fallback to file-based import via cacheDir and FileProvider with ACTION_VIEW if structured parsing fails.
 - finish()
 
 handleCalendar(text):

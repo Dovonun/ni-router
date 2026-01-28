@@ -9,5 +9,5 @@
 
 ## Code Philosophy & Parsing
 - **Native Minimalism:** Adhere to a "no dependency" rule by using standard Kotlin String manipulation and Regex for all parsing tasks (WIFI, vCard, Calendar).
-- **Single Source Logic:** Aim to keep all routing and parsing logic within a single Kotlin file (`RouterActivity.kt`) to minimize complexity and overhead.
+- **Modular Minimalism:** Keep parsing and routing logic modularized (e.g., `WifiRouter.kt`, `VCardRouter.kt`) for clarity, while maintaining a zero-dependency, lightweight footprint.
 - **System-First Execution:** The app's role is strictly as a translator; once a system intent is dispatched, the app must immediately terminate.
