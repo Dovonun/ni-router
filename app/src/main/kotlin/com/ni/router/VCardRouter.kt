@@ -34,7 +34,8 @@ class VCardRouter {
         val adr = extractField(payload, "ADR")
         val url = extractField(payload, "URL")
 
-        if (name != null || phone != null || email != null || org != null || title != null) {
+        // If we found at least a name or a phone number, use the interactive editor
+        if (!name.isNullOrBlank() || !phone.isNullOrBlank() || !email.isNullOrBlank() || !org.isNullOrBlank() || !title.isNullOrBlank()) {
             val intent = Intent(Intent.ACTION_INSERT).apply {
                 type = ContactsContract.Contacts.CONTENT_TYPE
                 putExtra(ContactsContract.Intents.Insert.NAME, name)
@@ -43,14 +44,14 @@ class VCardRouter {
                 putExtra(ContactsContract.Intents.Insert.COMPANY, org)
                 putExtra(ContactsContract.Intents.Insert.JOB_TITLE, title)
                 putExtra(ContactsContract.Intents.Insert.POSTAL, formatAddress(adr))
-                putExtra(ContactsContract.Intents.Insert.NOTES, url) // URL usually goes to notes in simple INSERT
+                putExtra(ContactsContract.Intents.Insert.NOTES, url)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)
             return true
         }
 
-        // Fallback to file-based import if parsing fails
+        // Fallback to file-based import if parsing fails to get structured data
         return try {
             val vcardFile = File(context.cacheDir, "contact.vcf")
             vcardFile.writeText(payload.trim())
@@ -77,18 +78,21 @@ class VCardRouter {
 
     private fun formatAddress(adr: String?): String? {
         if (adr == null) return null
-        // ADR: postbox;extended;street;locality;region;postalcode;country
         return adr.replace(";", " ").trim().replace(Regex("\\s+"), " ")
     }
 
     private fun extractField(payload: String, fieldName: String): String? {
+        // Look for FIELDNAME: or FIELDNAME;
         val lines = payload.lines()
         for (line in lines) {
             val trimmedLine = line.trim()
             if (trimmedLine.startsWith(fieldName, ignoreCase = true)) {
-                val firstColon = trimmedLine.indexOf(':')
-                if (firstColon != -1 && trimmedLine.substring(0, firstColon).contains(fieldName, ignoreCase = true)) {
-                    return trimmedLine.substring(firstColon + 1).trim()
+                val nextChar = trimmedLine.getOrNull(fieldName.length)
+                if (nextChar == ':' || nextChar == ';') {
+                    val firstColon = trimmedLine.indexOf(':')
+                    if (firstColon != -1) {
+                        return trimmedLine.substring(firstColon + 1).trim()
+                    }
                 }
             }
         }
