@@ -20,52 +20,60 @@ class WifiRouter {
         val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         if (payload.equals("WIFI:CLEAR", ignoreCase = true)) {
-            // Clearing requires the original suggestions, but we can try to pass an empty list
-            // or use a dummy suggestion to trigger a "replace/remove" if we had the same ID.
-            // Since we don't have the list, we notify the user how to clear if the API fails.
-            val status = wifiManager.removeNetworkSuggestions(emptyList())
-            Toast.makeText(context, "Network suggestions cleared (if any).", Toast.LENGTH_SHORT).show()
+            // This clears ANY lingering suggestions previously added by this app
+            wifiManager.removeNetworkSuggestions(emptyList())
+            Toast.makeText(context, "Lingering network suggestions cleared.", Toast.LENGTH_SHORT).show()
             return true
         }
 
         val config = parsePayload(payload) ?: return false
         
+        // Show WiFi panel if disabled (API 29+)
         if (!wifiManager.isWifiEnabled) {
-            Toast.makeText(context, "Please enable WiFi to connect.", Toast.LENGTH_LONG).show()
-            val panelIntent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
+            val panelIntent = Intent("android.settings.panel.action.WIFI").apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(panelIntent)
             return true
         }
 
-        val suggestionBuilder = WifiNetworkSuggestion.Builder()
-            .setSsid(config.ssid)
-            .setIsAppInteractionRequired(true)
+        // Use ACTION_WIFI_ADD_NETWORKS (API 30+) for a "stateless" saved network experience
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val suggestionBuilder = WifiNetworkSuggestion.Builder()
+                .setSsid(config.ssid)
 
-        if (config.password != null) {
-            when (config.type?.uppercase()) {
-                "WPA", "WPA2" -> suggestionBuilder.setWpa2Passphrase(config.password)
-                "WPA3" -> suggestionBuilder.setWpa3Passphrase(config.password)
+            if (config.password != null) {
+                when (config.type?.uppercase()) {
+                    "WPA", "WPA2" -> suggestionBuilder.setWpa2Passphrase(config.password)
+                    "WPA3" -> suggestionBuilder.setWpa3Passphrase(config.password)
+                }
             }
-        }
 
-        val suggestion = suggestionBuilder.build()
-        val suggestionsList = listOf(suggestion)
-        
-        val status = wifiManager.addNetworkSuggestions(suggestionsList)
-
-        if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS) {
-            Toast.makeText(context, "WiFi Suggested: ${config.ssid}. Tap to connect in WiFi settings.", Toast.LENGTH_LONG).show()
-            
-            val pickerIntent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
+            val suggestion = suggestionBuilder.build()
+            val intent = Intent(Settings.ACTION_WIFI_ADD_NETWORKS).apply {
+                val bundle = Bundle()
+                bundle.putParcelableArrayList("android.provider.extra.WIFI_NETWORK_LIST", arrayListOf(suggestion))
+                putExtras(bundle)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(pickerIntent)
+            context.startActivity(intent)
+            return true
+        } else {
+            // Fallback for API 29 - unfortunately suggestions are the only way here
+            val suggestionBuilder = WifiNetworkSuggestion.Builder()
+                .setSsid(config.ssid)
+            if (config.password != null && config.type?.uppercase() != "WPA3") {
+                suggestionBuilder.setWpa2Passphrase(config.password)
+            }
+            val suggestion = suggestionBuilder.build()
+            wifiManager.addNetworkSuggestions(listOf(suggestion))
+            
+            val settingsIntent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(settingsIntent)
             return true
         }
-        
-        return false
     }
 
     fun parsePayload(payload: String): WifiConfig? {

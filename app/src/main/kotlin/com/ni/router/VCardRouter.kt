@@ -15,7 +15,18 @@ class VCardRouter {
 
     fun route(context: Context, payload: String): Boolean {
         // Try to parse basic info for ACTION_INSERT (better UX)
-        val name = extractField(payload, "FN") ?: extractField(payload, "N")
+        var name = extractField(payload, "FN")
+        if (name == null) {
+            val n = extractField(payload, "N")
+            if (n != null) {
+                // Convert "Last;First;Middle;Prefix;Suffix" to "First Last"
+                val parts = n.split(";")
+                val first = parts.getOrNull(1)?.trim() ?: ""
+                val last = parts.getOrNull(0)?.trim() ?: ""
+                name = "$first $last".trim()
+            }
+        }
+
         val phone = extractField(payload, "TEL")
         val email = extractField(payload, "EMAIL")
         val org = extractField(payload, "ORG")
