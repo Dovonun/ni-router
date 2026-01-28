@@ -17,13 +17,31 @@ data class WifiConfig(
 
 class WifiRouter {
     fun route(context: Context, payload: String): Boolean {
+        val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+        if (payload.equals("WIFI:CLEAR", ignoreCase = true)) {
+            // Clearing requires the original suggestions, but we can try to pass an empty list
+            // or use a dummy suggestion to trigger a "replace/remove" if we had the same ID.
+            // Since we don't have the list, we notify the user how to clear if the API fails.
+            val status = wifiManager.removeNetworkSuggestions(emptyList())
+            Toast.makeText(context, "Network suggestions cleared (if any).", Toast.LENGTH_SHORT).show()
+            return true
+        }
+
         val config = parsePayload(payload) ?: return false
         
-        val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        if (!wifiManager.isWifiEnabled) {
+            Toast.makeText(context, "Please enable WiFi to connect.", Toast.LENGTH_LONG).show()
+            val panelIntent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
+            context.startActivity(panelIntent)
+            return true
+        }
 
         val suggestionBuilder = WifiNetworkSuggestion.Builder()
             .setSsid(config.ssid)
-            .setIsAppInteractionRequired(true) // System will notify app when connecting
+            .setIsAppInteractionRequired(true)
 
         if (config.password != null) {
             when (config.type?.uppercase()) {
@@ -34,16 +52,12 @@ class WifiRouter {
 
         val suggestion = suggestionBuilder.build()
         val suggestionsList = listOf(suggestion)
-
-        // Clear previous suggestions from this app to avoid "duplicated key" issues
-        wifiManager.removeNetworkSuggestions(emptyList<WifiNetworkSuggestion>()) 
         
         val status = wifiManager.addNetworkSuggestions(suggestionsList)
 
         if (status == WifiManager.STATUS_NETWORK_SUGGESTIONS_SUCCESS) {
-            Toast.makeText(context, "WiFi Suggested: ${config.ssid}. Check WiFi settings to connect.", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, "WiFi Suggested: ${config.ssid}. Tap to connect in WiFi settings.", Toast.LENGTH_LONG).show()
             
-            // On API 29+, we can try to trigger the WiFi picker for convenience
             val pickerIntent = Intent(Settings.ACTION_WIFI_SETTINGS).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }

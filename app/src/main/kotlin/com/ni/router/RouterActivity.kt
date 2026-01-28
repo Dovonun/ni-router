@@ -32,7 +32,7 @@ class RouterActivity : Activity() {
 
     private fun routePayload(payload: String) {
         val success = when {
-            payload.startsWith("WIFI:", ignoreCase = true) -> wifiRouter.route(this, payload)
+            payload.startsWith("WIFI:", ignoreCase = true) || payload.equals("WIFI:CLEAR", ignoreCase = true) -> wifiRouter.route(this, payload)
             vCardRouter.isVCard(payload) -> vCardRouter.route(this, payload)
             calendarRouter.isCalendar(payload) -> calendarRouter.route(this, payload)
             else -> false

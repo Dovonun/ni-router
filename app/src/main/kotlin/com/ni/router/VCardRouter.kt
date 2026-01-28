@@ -18,13 +18,21 @@ class VCardRouter {
         val name = extractField(payload, "FN") ?: extractField(payload, "N")
         val phone = extractField(payload, "TEL")
         val email = extractField(payload, "EMAIL")
+        val org = extractField(payload, "ORG")
+        val title = extractField(payload, "TITLE")
+        val adr = extractField(payload, "ADR")
+        val url = extractField(payload, "URL")
 
-        if (name != null || phone != null || email != null) {
+        if (name != null || phone != null || email != null || org != null || title != null) {
             val intent = Intent(Intent.ACTION_INSERT).apply {
                 type = ContactsContract.Contacts.CONTENT_TYPE
                 putExtra(ContactsContract.Intents.Insert.NAME, name)
                 putExtra(ContactsContract.Intents.Insert.PHONE, phone)
                 putExtra(ContactsContract.Intents.Insert.EMAIL, email)
+                putExtra(ContactsContract.Intents.Insert.COMPANY, org)
+                putExtra(ContactsContract.Intents.Insert.JOB_TITLE, title)
+                putExtra(ContactsContract.Intents.Insert.POSTAL, formatAddress(adr))
+                putExtra(ContactsContract.Intents.Insert.NOTES, url) // URL usually goes to notes in simple INSERT
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(intent)
@@ -54,6 +62,12 @@ class VCardRouter {
             e.printStackTrace()
             false
         }
+    }
+
+    private fun formatAddress(adr: String?): String? {
+        if (adr == null) return null
+        // ADR: postbox;extended;street;locality;region;postalcode;country
+        return adr.replace(";", " ").trim().replace(Regex("\\s+"), " ")
     }
 
     private fun extractField(payload: String, fieldName: String): String? {
