@@ -11,7 +11,7 @@
 - [x] Task: Implement WIFI payload routing 3e7f886
     - [x] Write unit tests for WIFI parsing and routing logic
     - [x] Implement WIFI parsing and `WifiNetworkSuggestion` logic
-- [ ] Task: Implement VCARD payload routing
+- [~] Task: Implement VCARD payload routing
     - [ ] Write unit tests for VCARD file generation and intent dispatch
     - [ ] Implement VCARD `FileProvider` logic and `ACTION_VIEW` intent
 - [ ] Task: Implement Calendar payload routing

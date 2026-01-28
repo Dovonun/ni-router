@@ -7,6 +7,7 @@ import android.os.Bundle
 class RouterActivity : Activity() {
     private val payloadRouter = PayloadRouter()
     private val wifiRouter = WifiRouter()
+    private val vCardRouter = VCardRouter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,8 @@ class RouterActivity : Activity() {
     private fun routePayload(payload: String) {
         if (payload.startsWith("WIFI:", ignoreCase = true)) {
             wifiRouter.route(this, payload)
+        } else if (vCardRouter.isVCard(payload)) {
+            vCardRouter.route(this, payload)
         }
     }
 }
