@@ -20,7 +20,6 @@ class WifiRouter {
     private val TAG = "NiRouter-Wifi"
     enum class RouteResult {
         SUCCESS,
-        ALREADY_CONNECTED,
         WAITING_FOR_WIFI,
         FAILURE
     }
@@ -38,23 +37,22 @@ class WifiRouter {
         val config = parsePayload(payload) ?: return RouteResult.FAILURE
         Log.d(TAG, "Parsed config: SSID=${config.ssid}, Type=${config.type}")
         
-        // Check if already connected
-        val info = wifiManager.connectionInfo
-        val currentSsid = info.ssid?.replace("\"", "")
-        Log.d(TAG, "Current SSID: $currentSsid")
-
-        if (currentSsid != null && currentSsid != "<unknown ssid>" && currentSsid.equals(config.ssid, ignoreCase = true)) {
-            Log.d(TAG, "Already connected to ${config.ssid}")
-            Toast.makeText(context, "Already connected to ${config.ssid}", Toast.LENGTH_SHORT).show()
-            return RouteResult.ALREADY_CONNECTED
-        }
-
         if (!wifiManager.isWifiEnabled) {
             Log.d(TAG, "WiFi disabled, showing panel")
+            // ACTION_WIFI_SETTINGS is more reliable for older devices, 
+            // but the panel is better for API 29+. 
+            // We'll use the intent string to avoid compile errors if the constant is missing
             val panelIntent = Intent("android.settings.panel.action.WIFI").apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
-            context.startActivity(panelIntent)
+            try {
+                context.startActivity(panelIntent)
+            } catch (e: Exception) {
+                // Fallback to full settings if panel fails
+                context.startActivity(Intent(Settings.ACTION_WIFI_SETTINGS).apply {
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                })
+            }
             return RouteResult.WAITING_FOR_WIFI
         }
 
