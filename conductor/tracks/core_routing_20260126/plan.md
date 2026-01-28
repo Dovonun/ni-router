@@ -1,7 +1,7 @@
 # Implementation Plan: Core Intent Routing
 
 ## Phase 1: Project Scaffolding
-- [ ] Task: Initialize Android project structure (Gradle files, AndroidManifest.xml)
+- [~] Task: Initialize Android project structure (Gradle files, AndroidManifest.xml)
     - [ ] Set application name to "Ni-Router" in `AndroidManifest.xml` and `strings.xml`
 - [ ] Task: Configure `FileProvider` in AndroidManifest.xml
 - [ ] Task: Create `RouterActivity` skeleton with basic intent handling
