@@ -8,6 +8,7 @@ import android.os.Build
 import android.provider.Settings
 import android.os.Bundle
 import android.widget.Toast
+import android.util.Log
 
 data class WifiConfig(
     val ssid: String,
@@ -16,6 +17,7 @@ data class WifiConfig(
 )
 
 class WifiRouter {
+    private val TAG = "NiRouter-Wifi"
     enum class RouteResult {
         SUCCESS,
         ALREADY_CONNECTED,
@@ -27,22 +29,28 @@ class WifiRouter {
         val wifiManager = context.getSystemService(Context.WIFI_SERVICE) as WifiManager
 
         if (payload.equals("WIFI:CLEAR", ignoreCase = true)) {
+            Log.d(TAG, "Clearing network suggestions")
             wifiManager.removeNetworkSuggestions(emptyList())
             Toast.makeText(context, "Lingering network suggestions cleared.", Toast.LENGTH_SHORT).show()
             return RouteResult.SUCCESS
         }
 
         val config = parsePayload(payload) ?: return RouteResult.FAILURE
+        Log.d(TAG, "Parsed config: SSID=${config.ssid}, Type=${config.type}")
         
-        // Check if already connected (best effort without location permission)
+        // Check if already connected
         val info = wifiManager.connectionInfo
         val currentSsid = info.ssid?.replace("\"", "")
+        Log.d(TAG, "Current SSID: $currentSsid")
+
         if (currentSsid != null && currentSsid != "<unknown ssid>" && currentSsid.equals(config.ssid, ignoreCase = true)) {
+            Log.d(TAG, "Already connected to ${config.ssid}")
             Toast.makeText(context, "Already connected to ${config.ssid}", Toast.LENGTH_SHORT).show()
             return RouteResult.ALREADY_CONNECTED
         }
 
         if (!wifiManager.isWifiEnabled) {
+            Log.d(TAG, "WiFi disabled, showing panel")
             val panelIntent = Intent("android.settings.panel.action.WIFI").apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
@@ -52,6 +60,7 @@ class WifiRouter {
 
         // Use ACTION_WIFI_ADD_NETWORKS (API 30+) for a "stateless" saved network experience
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Log.d(TAG, "Using ACTION_WIFI_ADD_NETWORKS (API 30+)")
             val suggestionBuilder = WifiNetworkSuggestion.Builder()
                 .setSsid(config.ssid)
 
@@ -73,6 +82,7 @@ class WifiRouter {
             return RouteResult.SUCCESS
         } else {
             // Fallback for API 29
+            Log.d(TAG, "Using addNetworkSuggestions (API 29 fallback)")
             val suggestionBuilder = WifiNetworkSuggestion.Builder()
                 .setSsid(config.ssid)
             if (config.password != null && config.type?.uppercase() != "WPA3") {
