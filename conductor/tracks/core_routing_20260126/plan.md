@@ -8,9 +8,9 @@
 - [x] Task: Conductor - User Manual Verification 'Project Scaffolding' (Protocol in workflow.md) f4b4a5e
 
 ## Phase 2: Routing Implementation
-- [~] Task: Implement WIFI payload routing
-    - [ ] Write unit tests for WIFI parsing and routing logic
-    - [ ] Implement WIFI parsing and `WifiNetworkSuggestion` logic
+- [x] Task: Implement WIFI payload routing 3e7f886
+    - [x] Write unit tests for WIFI parsing and routing logic
+    - [x] Implement WIFI parsing and `WifiNetworkSuggestion` logic
 - [ ] Task: Implement VCARD payload routing
     - [ ] Write unit tests for VCARD file generation and intent dispatch
     - [ ] Implement VCARD `FileProvider` logic and `ACTION_VIEW` intent
