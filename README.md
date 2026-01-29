@@ -1,32 +1,32 @@
 # Ni-Router
 
-Ni-Router is a minimal, privacy-focused Android application designed to act as a stateless intent router for QR code payloads. It extracts data from scanned codes (WiFi, vCard, Calendar) and dispatches them to the appropriate system handlers (WiFi Settings, Contacts, Calendar) without maintaining any UI, persistence, or background services. Designed primarily for GrapheneOS users, it provides a seamless bridge between raw QR data and system actions.
+Ni-Router is a tiny, privacy-first Android app that handles QR code data without any fuss. It acts as a stateless "middleman" that takes WiFi, contact, or calendar info from a scan and immediately hands it off to the right system app—then it disappears. No UI, no background services, and no tracking.
 
 ## Installation
 
-### Manual Installation
-1. Navigate to the [Releases](https://github.com/Dovonun/ni-router/releases) page.
+### Get the APK
+1. Head over to the [Releases](https://github.com/Dovonun/ni-router/releases) page.
 2. Download the latest `app-release.apk`.
-3. Open the APK on your Android device to install.
+3. Open it on your phone to install.
 
 ### Obtainium
-For automated updates, you can add this repository URL directly to [Obtainium](https://github.com/ImranR04/Obtainium):
+If you use [Obtainium](https://github.com/ImranR04/Obtainium) for updates, just add this repo URL:
 `https://github.com/Dovonun/ni-router`
 
 ## Security & Verification
 
-Ni-Router is built and signed automatically via GitHub Actions to ensure build integrity and transparency.
+Ni-Router is built and signed automatically via GitHub Actions so the process is transparent and auditable.
 
 ### AppVerifier
-You can verify the authenticity of the installed APK using [AppVerifier](https://github.com/stefan-niedermann/AppVerifier).
+You can verify that your APK is the real deal using [AppVerifier](https://github.com/stefan-niedermann/AppVerifier).
 
 *   **Application ID:** `com.ni.router`
 *   **Certificate SHA-256 Fingerprint:** `PLACEHOLDER_SHA256_FINGERPRINT`
 
-The certificate fingerprint is stable across all versions and represents the unique publisher identity.
+This fingerprint stays the same across versions and confirms the app came from this project.
 
-## Technical Notes
-- **Zero Dependencies:** Uses only native Android APIs and standard Kotlin libraries.
-- **No Play Services:** Does not require or use Google Play Services.
-- **Minimal Footprint:** Optimized for size and performance (APK size < 200KB).
-- **GrapheneOS Optimized:** Designed to complement the GrapheneOS secure QR scanner.
+## Tech Stuff
+- **Zero Dependencies:** Just native Android APIs and Kotlin.
+- **No Play Services:** Works perfectly on "de-Googled" devices.
+- **Tiny APK:** Usually under 200KB.
+- **Built for GrapheneOS:** The perfect companion for the GrapheneOS secure QR scanner.
