@@ -10,10 +10,10 @@
 - [x] Task: Conductor - User Manual Verification 'Gradle & Signing Configuration' (Protocol in workflow.md) ce7d884
 
 ## Phase 2: GitHub Actions Workflow
-- [ ] Task: Create GitHub Actions workflow file `.github/workflows/build-release.yml`
-    - [ ] Implement `build` job for PRs (Lint + Build only)
-    - [ ] Implement `release` job for Tags (Lint + Signed Build + GitHub Release)
-    - [ ] Add keystore restoration step (`base64 -d`) from secrets
+- [x] Task: Create GitHub Actions workflow file `.github/workflows/build-release.yml` fc81d0f
+    - [x] Implement `build` job for PRs (Lint + Build only)
+    - [x] Implement `release` job for Tags (Lint + Signed Build + GitHub Release)
+    - [x] Add keystore restoration step (`base64 -d`) from secrets
 - [ ] Task: Write failing test/verification for workflow triggers
     - [ ] Push a branch to verify PR workflow triggers correctly (Red Phase)
 - [ ] Task: Conductor - User Manual Verification 'GitHub Actions Workflow' (Protocol in workflow.md)
