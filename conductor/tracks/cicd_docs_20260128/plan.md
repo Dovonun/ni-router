@@ -14,8 +14,8 @@
     - [x] Implement `build` job for PRs (Lint + Build only)
     - [x] Implement `release` job for Tags (Lint + Signed Build + GitHub Release)
     - [x] Add keystore restoration step (`base64 -d`) from secrets
-- [ ] Task: Write failing test/verification for workflow triggers
-    - [ ] Push a branch to verify PR workflow triggers correctly (Red Phase)
+- [x] Task: Write failing test/verification for workflow triggers 141908a
+    - [x] Push a branch to verify PR workflow triggers correctly (Red Phase)
 - [ ] Task: Conductor - User Manual Verification 'GitHub Actions Workflow' (Protocol in workflow.md)
 
 ## Phase 3: Documentation
