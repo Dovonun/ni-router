@@ -9,14 +9,14 @@
     - [x] Ensure release build strips debug symbols and omits build metadata
 - [x] Task: Conductor - User Manual Verification 'Gradle & Signing Configuration' (Protocol in workflow.md) ce7d884
 
-## Phase 2: GitHub Actions Workflow
+## Phase 2: GitHub Actions Workflow [checkpoint: 2d70c97]
 - [x] Task: Create GitHub Actions workflow file `.github/workflows/build-release.yml` fc81d0f
     - [x] Implement `build` job for PRs (Lint + Build only)
     - [x] Implement `release` job for Tags (Lint + Signed Build + GitHub Release)
     - [x] Add keystore restoration step (`base64 -d`) from secrets
 - [x] Task: Write failing test/verification for workflow triggers 141908a
     - [x] Push a branch to verify PR workflow triggers correctly (Red Phase)
-- [ ] Task: Conductor - User Manual Verification 'GitHub Actions Workflow' (Protocol in workflow.md)
+- [x] Task: Conductor - User Manual Verification 'GitHub Actions Workflow' (Protocol in workflow.md) 2d70c97
 
 ## Phase 3: Documentation
 - [ ] Task: Create `README.md` with technical specifications
