@@ -4,9 +4,9 @@
 - [x] Task: Update `app/build.gradle.kts` to support environment-variable-based signing 70adb58
     - [x] Add `signingConfigs` block that reads from `System.getenv()`
     - [x] Configure `release` build type to use the new `signingConfig`
-- [ ] Task: Configure build for reproducibility/determinism
-    - [ ] Disable timestamps in APK ZIP entries via Gradle properties
-    - [ ] Ensure release build strips debug symbols and omits build metadata
+- [x] Task: Configure build for reproducibility/determinism b4d9892
+    - [x] Disable timestamps in APK ZIP entries via Gradle properties
+    - [x] Ensure release build strips debug symbols and omits build metadata
 - [ ] Task: Conductor - User Manual Verification 'Gradle & Signing Configuration' (Protocol in workflow.md)
 
 ## Phase 2: GitHub Actions Workflow
