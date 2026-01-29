@@ -4,6 +4,10 @@
 - **Language:** Kotlin
 - **Build System:** Gradle with Kotlin DSL (`build.gradle.kts`)
 - **Version Control:** Git
+- **CI/CD:** GitHub Actions
+    - **JDK:** 17 (Temurin)
+    - **Automated Releases:** Signed APKs on tag push (`v*`)
+    - **Build Verification:** Linting and build check on Pull Requests
 
 ## Android Specifications
 - **Minimum SDK:** 29 (Android 10) - Required for `WifiNetworkSuggestion` API.
