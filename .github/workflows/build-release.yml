@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -53,7 +54,7 @@ jobs:
 
       - name: Restore Keystore
         run: |
-          echo "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+          printf "%s" "${{ secrets.RELEASE_KEYSTORE_BASE64 }}" | base64 -d > release.keystore
 
       - name: Run Lint
         run: ./gradlew lint --quiet
