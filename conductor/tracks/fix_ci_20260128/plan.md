@@ -1,7 +1,7 @@
 # Implementation Plan: Fix CI Build and Trigger Issues
 
 ## Phase 1: Workflow Hardening
-- [x] Task: Update `.github/workflows/build-release.yml` for robust restoration and triggers 0483ce0
+- [x] Task: Update `.github/workflows/build-release.yml` for robust restoration and triggers 1e8e65d
     - [x] Add `workflow_dispatch:` to the `on` block
     - [x] Replace `echo` with `printf "%s"` in the `Restore Keystore` step to prevent binary corruption
     - [x] Ensure `RELEASE_STORE_FILE` path in the `env` block matches the restoration location
