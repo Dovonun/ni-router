@@ -35,6 +35,12 @@ android {
             isShrinkResources = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
             signingConfig = signingConfigs.getByName("release")
+            applicationVariants.all {
+                outputs.all {
+                    val output = this as com.android.build.gradle.internal.api.ApkVariantOutputImpl
+                    output.outputFileName = "ni-router-release.apk"
+                }
+            }
         }
     }
     compileOptions {
