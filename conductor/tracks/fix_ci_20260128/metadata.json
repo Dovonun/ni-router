@@ -1,0 +1,8 @@
+{
+  "track_id": "fix_ci_20260128",
+  "type": "bug",
+  "status": "new",
+  "created_at": "2026-01-28T18:30:00Z",
+  "updated_at": "2026-01-28T18:30:00Z",
+  "description": "Fix 'Tag number over 30' signing error and GitHub Actions trigger issues"
+}

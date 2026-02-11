@@ -10,8 +10,10 @@ Ni-Router is a minimal, privacy-focused Android app for handling QR code data. I
 3. Open the file on your device to install.
 
 ### Obtainium
-For automated updates via [Obtainium](https://github.com/ImranR04/Obtainium), use this repository URL:
+For automated updates via [Obtainium](https://github.com/ImranR98/Obtainium), you can add this repository URL:
 `https://github.com/Dovonun/ni-router`
+
+[![Get it on Obtainium](https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png)](https://apps.obtainium.imranr.dev/redirect?r=obtainium%3A//app/%7B%22id%22%3A%20%22com.ni.router%22%2C%20%22url%22%3A%20%22https%3A//github.com/Dovonun/ni-router%22%2C%20%22author%22%3A%20%22Dovonun%22%2C%20%22name%22%3A%20%22Ni-Router%22%2C%20%22preferredApkIndex%22%3A%200%2C%20%22additionalSettings%22%3A%20%22%7B%5C%22verifyLatestTag%5C%22%3A%20true%2C%20%5C%22apkFilterRegEx%5C%22%3A%20%5C%22com.ni.router%5C%22%7D%22%2C%20%22overrideSource%22%3A%20null%7D)
 
 ## Security & Verification
 
