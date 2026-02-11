@@ -11,8 +11,8 @@ android {
         applicationId = "com.ni.router"
         minSdk = 29
         targetSdk = 36
-        versionCode = 6
-        versionName = "0.0.6"
+        versionCode = project.findProperty("versionCode")?.toString()?.toInt() ?: 6
+        versionName = project.findProperty("versionName")?.toString() ?: "0.0.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

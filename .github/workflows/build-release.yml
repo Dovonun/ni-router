@@ -65,7 +65,21 @@ jobs:
         run: ./gradlew lint --quiet
 
       - name: Build Release APK
-        run: ./gradlew assembleRelease --quiet
+        run: |
+          # Extract version from tag (e.g., v0.0.6 -> 0.0.6)
+          # If not a tag, default to 'snapshot'
+          if [[ $GITHUB_REF == refs/tags/* ]]; then
+            VERSION_NAME=${GITHUB_REF#refs/tags/v}
+          else
+            VERSION_NAME="snapshot"
+          fi
+          
+          # Use GITHUB_RUN_NUMBER for versionCode (offset by 100 to stay above manual versions)
+          VERSION_CODE=$((GITHUB_RUN_NUMBER + 100))
+          
+          ./gradlew assembleRelease --quiet \
+            -PversionName=$VERSION_NAME \
+            -PversionCode=$VERSION_CODE
         env:
           RELEASE_STORE_FILE: ../release.keystore
           RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
